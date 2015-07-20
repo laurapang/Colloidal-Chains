@@ -1,4 +1,4 @@
-//Date: 07.14.15 
+//Date: 07.16.15 
 //Description: dimensionalization
 //Name: Ramin Khajeh
 #include "main.h"
@@ -7,7 +7,7 @@ int main(){
    traj = fopen("myTraj01_low.xyz","w");
    InitialSet();
    t=0;
-   note();double aa = 1E-9; double bb = 2E-9; double add = aa+bb; double times = aa*bb; double divide = bb/aa;
+   note();//double aa = 1E-9; double bb = 2E-9; double add = aa+bb; double times = aa*bb; double divide = bb/aa;
 
    while(t<time){
       t = t + 1;//dt;
