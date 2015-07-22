@@ -11,12 +11,26 @@ void InitialSet(){
    
 void IniSV(){
    int i;
-   for (i=0;i<N;i++){
-      SV[i]=0;
+   for (i=0;i<9;i++){
+      SV[i]=i;
+      SV[i+9]=8-i;
    }
 }
 void IniIM(){
-   IM[0][0]= 1.0;
+   int i,j;
+   for (i=0;i<9;i++){
+      for (j=0;j<9;j++){
+         if (i==j){
+            IM[i][j] = 1;
+         }
+         else{
+            IM[i][j] = 0;
+         }
+      }
+   }
+   IM[6][6]= 0;
+   IM[7][7]= 0;
+   IM[8][8]= 0;
 }
 
 void IniConf(){
@@ -134,6 +148,32 @@ double Uniform(){
 double RandNormal(){
    double x=sqrt(-2.0*log(Uniform()))*sin(2.0*M_PI*Uniform());
    return x;
+}
+
+void State(){
+   if (t%dat==0){
+      b1=0;b2=0;b3=0;b4=0;b5=0;b6=0;
+      if (R[0][17] <BoL){
+         b1++;
+      }
+      if (R[1][16] <BoL){
+         b2++;
+      }
+      if (R[2][15] <BoL){
+         b3++;
+      }
+      if (R[3][14] <BoL){
+         b4++;
+      }
+      if (R[4][13] <BoL){
+         b5++;
+      }
+      if (R[5][12] <BoL){
+         b6++;
+      }
+      bTotal = b1+b2+b3+b4+b5+b6;
+      fprintf(stateFile,"%d\t%d\t%d\t%d\t%d\t%d\t%d\n",b1,b2,b3,b4,b5,b6,bTotal);
+     }
 }
 
 void Renew(){

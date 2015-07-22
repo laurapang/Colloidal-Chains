@@ -1,10 +1,12 @@
-//Date: 07.07.15 
-//Description: 18 particle simulation, 4 different species,
+//Date: 07.21.15 
+//Description: 18 particle simulation, 4 different species, 6p simulation modified to 18
+//this one seems to work properly
 //Name: Ramin Khajeh
 #include "main.h"
 
 int main(){
-   traj = fopen("myTraj_0721.xyz","w");
+   traj = fopen("myTraj_0721_18p_modified6p.xyz","w");
+   stateFile = fopen("state_0721.txt","w");
    InitialSet();
    t=0;
    while(t<time){
@@ -19,6 +21,7 @@ int main(){
           }
       }
       SumForces();
+      State();
       Renew();
       }
    return 0;
