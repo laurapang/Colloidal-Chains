@@ -5,26 +5,35 @@
 #include <time.h>
 
 #define Dim   3
-#define tau   2.0E-9
+//#define tau   2.0E-9
 #define diam  1.0E-9
-#define T     334.0
+//#define T     334.0
 #define Kb    1.38E-23
-#define h     0.000002*tau
-#define time  100000000// 1 microsecond
-#define zi    1.022*(Kb*T*tau)/(diam*diam) 
+//#define h     0.000002*tau
+#define time  750000000// 1 microsecond
+//#define zi    1.022*(Kb*T*tau)/(diam*diam) 
 #define N     18    
 #define L     64.0
-#define E     7.0*Kb*T
+//#define E     7.0*Kb*(298.0)
 #define dat   20000
 #define Vtime 100
 #define M     2 
-#define Dif   1.0*((diam*diam)/tau)
+//#define Dif   1.0*((diam*diam)/tau)
 #define Rho   30.0
 #define BoL   1.05*diam
 #define IE0   0.0
 #define Rv    2.0*diam
 
+double tau;
+double T;
+double h;
+double zi;
+double Dif;
+double E;
+
 void    InitialSet();
+void    openFiles(char* filename);
+void    SumForcesV();
 void    IniSV();
 void    IniIM();
 void    IniConf();

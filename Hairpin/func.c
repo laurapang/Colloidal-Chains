@@ -1,4 +1,5 @@
-//07.20.15
+//07.24.15
+//Hairpin 4 species with constraint
 //Ramin Khajeh
 #include "main.h"
 
@@ -11,20 +12,23 @@ void InitialSet(){
 }
    
 void openFiles(char* filename){
-  //runMain(fileName);
-
- char trajName[100]; char amatrixName[100]; char bondName[100]; char stateName[100];
-  strcpy(trajName,filename); 
-  strcat(trajName, "trajChain.xyz");
-  strcpy(stateName,filename); 
-  strcat(stateName, "state.txt");
-  strcpy(bondName,filename); 
-  strcat(bondName, "bond.txt");
-
-  printf("%s\t%s\t%s\n",trajName, stateName, bondName);
-  traj = fopen(trajName,"w");
-  stateFile = fopen(stateName,"w");
-  bond = fopen(bondName,"w");
+   //runMain(fileName);
+ 
+   char trajName[100]; 
+   char amatrixName[100];  
+   //char bondName[100]; 
+   char stateName[100];
+   strcpy(trajName,filename); 
+   strcat(trajName, "trajChain.xyz");
+   strcpy(stateName,filename); 
+   strcat(stateName, "state.txt");
+   //strcpy(bondName,filename); 
+   //strcat(bondName, "bond.txt");
+ 
+   //printf("%s\t%s\t%s\n",trajName, stateName, bondName);
+   traj = fopen(trajName,"w");
+   stateFile = fopen(stateName,"w");
+   //bond = fopen(bondName,"w");
 }
 
 void IniSV(){
@@ -35,21 +39,21 @@ void IniSV(){
    //    SV[i]=i;
    //    SV[i+9]=8-i;
    // }
-       char seq[] = "GCGTTGCTTCTCCAACGC";
-    for(i=0;i<sizeof(seq);i++){
-        char base =seq[i];
-        switch(base){
-            case 'A': SV[i]=0; break;
-            case 'T': SV[i]=1; break;
-            case 'C': SV[i]=2; break;
-            case 'G': SV[i]=3; break;
-        }
-    }   
-    for (i = 0; i<N;i++){
-        printf("%d  ",SV[i]);
-    }printf("\n");
-    //scp filename.txt lpang@login.rc.fas.harvard.edu:
-    printf("%s\n",seq);
+   char seq[] = "GCGTTGCTTCTCCAACGC";
+   for(i=0;i<sizeof(seq);i++){
+       char base =seq[i];
+       switch(base){
+           case 'A': SV[i]=0; break;
+           case 'T': SV[i]=1; break;
+           case 'C': SV[i]=2; break;
+           case 'G': SV[i]=3; break;
+       }
+   }   
+   //for (i = 0; i<N;i++){
+   //    printf("%d  ",SV[i]);
+   //}printf("\n");
+   //scp filename.txt lpang@login.rc.fas.harvard.edu:
+   //printf("%s\n",seq);
 }
 void IniIM(){
    //SINGLE SPECIES
@@ -95,7 +99,7 @@ void newcal(){
 
 void note(){
    int i,j;
-   if(t%dat == 0){
+   if(t%dat == 0 && t>600000000){
       fprintf(traj, "%d\n%s\n",N,"empty");
       for(i=0;i<N;i++){
          fprintf(traj,"%d\t",1);
@@ -130,7 +134,7 @@ void CalEdepth(){
    }
    else {
       if (CA[a]==b||CA[a]==-1)
-         Edep = 2.5*IM[SV[a]][SV[b]];
+         Edep = 1.5*IM[SV[a]][SV[b]];
       else
          Edep = 0;
    }
@@ -311,15 +315,16 @@ void oneBond(){
                 }}
             }
         }
-        if (t%dat==0){
-        fprintf(bond,"2Bonded: ");
-        int cc;
-        for (cc = 0; cc<N;cc++){
-            fprintf(bond,"%d\t%lf\t",CA[cc],R[cc][CA[cc]]/diam);
-        }fprintf(bond,"\n");
-        
+        //i commented out this part of the code to save time
+        //if (t%dat==0){
+        //fprintf(bond,"2Bonded: ");
+        //int cc;
+        //for (cc = 0; cc<N;cc++){
+        //    fprintf(bond,"%d\t%lf\t",CA[cc],R[cc][CA[cc]]/diam);
+        //}fprintf(bond,"\n");
+        //
 
-        }
+        //}
 }
 void IniCA(){
     int i;
