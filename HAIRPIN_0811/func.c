@@ -1,13 +1,21 @@
-//07.24.15
-//Hairpin 4 species with constraint
-//Ramin Khajeh
+//Date: 08.22.2015
+//Description: Brownian Simulation of RNA self-assembly
+//Harvard School of Engineering and Applied Sciences, Summer 2015 REU Program
+
+//Names: 
+//       Ramin Khajeh | raminkh@berkeley.edu
+//       Laura Pan    | laura.pangx@gmail.com 
+//Advisor: 
+//       Professor Michael P. Brenner
+//       Hidenori Tanaka
+
 #include "main.h"
 
+//This function sets initial conditions of the system.
 void InitialSet(){
-   IniConf();
-   //Roff = (1+(4/Rho))*diam;
-   Roff = (1.2)*diam;
-   IniSV();
+   IniConf();                 
+   Roff = (1+(4/Rho))*diam; //defining the cut-off length (above which there is no interaction) based on Holmes-Cerfon paper, section 5
+   IniSV();                 
    IniIM();
 }
    
@@ -30,7 +38,8 @@ void openFiles(char* filename){
    stateFile = fopen(stateName,"w");
    //bond = fopen(bondName,"w");
 }
-
+//-----------------------------------------------------------
+//This function constructs a Species Vector
 void IniSV(){
    int i;
    // for (i=0; i<N;i++)
@@ -129,12 +138,14 @@ void CalDist(){
 // if "a" and "b" are connected or not => if "CA[a]=b (CA[b])=a" or not 
 // if particles are inside the same cluster or not => if "CIA[a]=CIA[b]" or not" 
 
+//------------------------------------------------------
+//This function sets the depth of the Morse potential. 
 void CalEdepth(){
-   if(abs(a-b)==1){
+   if(abs(a-b)==1){                     //If two particles are neighbors, set the potential depth to 5.0
       Edep = 5.0;
    }
    else {
-      if (CA[a]==b||CA[a]==-1)
+      if (CA[a]==b||CA[a]==-1)          //
          Edep = 2.5*IM[SV[a]][SV[b]];
       else
          Edep = 0;

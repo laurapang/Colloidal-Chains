@@ -1,13 +1,19 @@
-//Date: 07.24.15 
-//Description: 18 particle simulation, 4 different species, 6p simulation modified to 18
-//this includes the constraint binding
-//this one seems to work properly
-//Name: Ramin Khajeh
+//Date: 08.22.2015
+//Description: Brownian Simulation of RNA self-assembly
+//Harvard School of Engineering and Applied Sciences, Summer 2015 REU Program
+
+//Names: 
+//       Ramin Khajeh | raminkh@berkeley.edu
+//       Laura Pan    | laura.pangx@gmail.com 
+//Advisor: 
+//       Professor Michael P. Brenner
+//       Hidenori Tanaka
+
 #include "main.h"
 
-int main(int argc, char **argv){
- 
-   //traj = fopen("myTraj_0723_2.xyz","w");
+int main(int argc, char **argv){                
+                                                
+   //traj = fopen("myTraj_0723_2.xyz","w");     
    //stateFile = fopen("state_0723_2.txt","w");
    //bond = fopen("bond)9723_2.txt","w");
 
