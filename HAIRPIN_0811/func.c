@@ -19,6 +19,9 @@ void InitialSet(){
    IniIM();
 }
    
+//initializes the file name of the output
+//DURING COMPILATION, when user runs "./EXEFILE.o OUTPUT-TEST 1" in terminal, output files will be:
+//OUTPUT-TESTtrajChain.xyz and OUTPUT-TESTstate.txt
 void openFiles(char* filename){
    //runMain(fileName);
  
@@ -52,7 +55,7 @@ void IniSV(){
    for(i=0;i<sizeof(seq);i++){
        char base =seq[i];
        switch(base){
-           case 'A': SV[i]=0; break;
+           case 'A': SV[i]=0; break;      //converting DNA bases into a numbered species
            case 'T': SV[i]=1; break;
            case 'C': SV[i]=2; break;
            case 'G': SV[i]=3; break;
@@ -61,7 +64,6 @@ void IniSV(){
    //for (i = 0; i<N;i++){
    //    printf("%d  ",SV[i]);
    //}printf("\n");
-   //scp filename.txt lpang@login.rc.fas.harvard.edu:
    //printf("%s\n",seq);
 }
 void IniIM(){
@@ -151,26 +153,26 @@ void CalEdepth(){
          Edep = 0;
    }
 }
-
+//calculates the forces between 2 given particles, a and b
 void CalForce(){
    int i;
-   if(Edep > 0.5){
-      if(Roff/diam < R[a][b]/diam){
+   if(Edep > 0.5){  //if the energy depth is large enough (low Edep is no attraction)
+      if(Roff/diam < R[a][b]/diam){ //if the Radius between a and b is too large (greater than the cut off distance Roff), there is no force
          F[a][b] = 0;
       }
-      else if (1 < R[a][b]/diam){
+      else if (1 < R[a][b]/diam){ //if the Radius is close enough for a force to be applied, calculate with modified morse potential equation
           F[a][b] = (-2.0*Rho*Edep*(E/(Kb*T)))*(exp(-Rho*(R[a][b]/diam-1.0))*(1-exp(-Rho*(R[a][b]/diam-1.0)))-((exp(4.0)-1.0)/exp(8.0)));
       }
-      else if (R[a][b]/diam <= 1){
+      else if (R[a][b]/diam <= 1){ //if the Radius is too close (R<1 means that the particles are overlapping), particles need to repel to prevent overlap
           F[a][b] = (-2.0*Rho*Edep*(E/(Kb*T)))*(pow(M, 2.0)*Rho*(R[a][b]/diam-1.0)-((exp(4.0)-1.0)/exp(8.0)));
       }
    }
 
-   else{
+   else{ //if there is no attraction between the particles
       if(1 < R[a][b]/diam){
          F[a][b] = 0;
       }
-      else if (R[a][b]/diam <= 1){
+      else if (R[a][b]/diam <= 1){ //if the particles are overlapping, they also need to repel
          F[a][b] = (-2.0*Rho*(E/(Kb*T)))*(pow(M, 2.0)*Rho*(R[a][b]/diam-1.0)-((exp(4.0)-1.0)/exp(8.0)));
       }
    }
@@ -180,6 +182,7 @@ void CalForce(){
       f[b][a][i] =  -f[a][b][i];
    }
 }
+//OLD METHOD (NOT USED) that sums forces NOT based on the verlet list
 void SumForces(){
    int i,j,k,l,m;
    for(i=0;i<N;i++){
@@ -195,6 +198,7 @@ void SumForces(){
       }
    }
 }
+//NEW method that sums forces based on verlet list
 void SumForcesV(){
    int i,j,k,l,m,n;
    for(i=0;i<N;i++){
@@ -214,19 +218,19 @@ void SumForcesV(){
 }
 
 
-
+//Generates a uniformly distributed random number
 double Uniform(){
    static int x=10;
    int i=1103515245, j=12345, k=2147483647;
    x = (i*x + j)&k;
    return ((double)x+1.0) / ((double)k+2.0);
 }
-
+//generates a number within normal distribution curve
 double RandNormal(){
    double x=sqrt(-2.0*log(Uniform()))*sin(2.0*M_PI*Uniform());
    return x;
 }
-
+//hard-coded state function for the OxDNA hairpin example
 void State(){
     if(t%dat == 0){
        fflush(traj);
@@ -260,7 +264,7 @@ void State(){
         
     }
 }
-
+//updates the variables for next calculation: the old position is set to the "new" position and old force is set to "new" force
 void Renew(){
    int i,j;
    for(i=0;i<N;i++){
@@ -271,7 +275,10 @@ void Renew(){
    }
 }
 
-
+//calculates verlet list
+//nlist[i] is the number of particles within a certain radius to "i"
+//in example, if i is near particle a and b
+//then nlist[i] = 2, and list[i][0]=a and list[i][1]=b
 void NewVerletList(){
     int i,j,k,l;
     for(i=0;i<N;i++){
@@ -302,7 +309,10 @@ void NewVerletList(){
       }
    }
 }
-
+//THIS FUNCTION IS FLAWED*****************************
+//ensures that the particle should only be bonded to one other particle at a time
+//refer to bintree.c and bintree.h for future work perhaps - bintree.c can generate sorted array
+//can sort the radius between a and b, and then designate connectivity starting based on the smallest distances
 void oneBond(){
   for (a=0; a<N;a++){
             double minBond = 1.05*diam;
