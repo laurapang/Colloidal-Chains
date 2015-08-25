@@ -9,6 +9,6 @@
 #SBATCH -e test.err # File to which STDERR will be written
 #SBATCH --array=0-19
 #SBATCH --mail-type=END # Type of email notification- BEGIN,END,FAIL,ALL
-#SBATCH --mail-user=raminkh@berkeley.edu # Email to which notifications will be sent
+#SBATCH --mail-user=laura.pangx@gmail.com # Email to which notifications will be sent
 
 ./a.out 0728_2_4spcs_$SLURM_ARRAY_TASK_ID $SLURM_ARRAY_TASK_ID 

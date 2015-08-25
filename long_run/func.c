@@ -99,7 +99,7 @@ void newcal(){
 
 void note(){
    int i,j;
-   if(t%dat == 0 && t>600000000){
+   if(t%dat == 0){
       fflush(stateFile);
       fprintf(traj, "%d\n%s\n",N,"empty");
       for(i=0;i<N;i++){
